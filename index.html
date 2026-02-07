@@ -1,0 +1,1399 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Galaxy Restaurant — A Taste Beyond the Stars. Fine dining with cosmic vibes, signature dishes, and immersive ambiance." />
+  <title>Galaxy Restaurant — A Taste Beyond the Stars</title>
+
+  <!-- Fonts (system fallback if blocked) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #070712;
+      --bg2:#0b0b1a;
+      --surface: rgba(255,255,255,.06);
+      --surface2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --border: rgba(255,255,255,.12);
+
+      --neon1: #9b5cff; /* purple */
+      --neon2: #35d3ff; /* blue */
+      --neon3: #b8c7ff; /* silver-ish */
+      --ok: #42f5c8;
+      --warn: #ffdd75;
+
+      --shadow: 0 18px 45px rgba(0,0,0,.45);
+      --radius: 18px;
+      --radius2: 24px;
+
+      --font-ui: "Space Grotesk", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+
+      --container: 1120px;
+      --header-h: 74px;
+    }
+
+    /* Light mode */
+    [data-theme="light"]{
+      --bg: #f7f8ff;
+      --bg2:#ffffff;
+      --surface: rgba(20,25,40,.06);
+      --surface2: rgba(20,25,40,.09);
+      --text: rgba(10,12,18,.92);
+      --muted: rgba(10,12,18,.68);
+      --border: rgba(10,12,18,.14);
+      --shadow: 0 18px 45px rgba(20,25,40,.12);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:var(--font-ui);
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 30% -10%, rgba(155,92,255,.20), transparent 55%),
+        radial-gradient(900px 500px at 80% 10%, rgba(53,211,255,.16), transparent 55%),
+        radial-gradient(1200px 700px at 60% 120%, rgba(184,199,255,.12), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      overflow-x:hidden;
+    }
+
+    /* Animated star canvases sit behind */
+    .cosmos{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      pointer-events:none;
+    }
+    #stars, #dust{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+    }
+    .glow-blob{
+      position:fixed;
+      width:620px;
+      height:620px;
+      border-radius:50%;
+      filter: blur(55px);
+      opacity:.18;
+      z-index:-3;
+      pointer-events:none;
+      background: radial-gradient(circle at 30% 30%, var(--neon1), transparent 55%),
+                  radial-gradient(circle at 70% 60%, var(--neon2), transparent 60%);
+      animation: drift 16s ease-in-out infinite;
+      left:-200px;
+      top:-200px;
+    }
+    .glow-blob.b2{
+      width:520px;height:520px;
+      left:auto; right:-180px; top:30%;
+      opacity:.14;
+      background: radial-gradient(circle at 40% 40%, var(--neon2), transparent 60%),
+                  radial-gradient(circle at 70% 70%, var(--neon3), transparent 60%);
+      animation-duration: 18s;
+    }
+    @keyframes drift{
+      0%,100%{ transform: translate(0,0) }
+      50%{ transform: translate(60px, 40px) }
+    }
+
+    a{color:inherit; text-decoration:none}
+    img{max-width:100%; display:block}
+
+    .container{
+      width:min(var(--container), calc(100% - 40px));
+      margin:0 auto;
+    }
+
+    /* Header */
+    header{
+      position:sticky;
+      top:0;
+      z-index:50;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(180deg, rgba(10,10,20,.70), rgba(10,10,20,.35));
+      border-bottom:1px solid var(--border);
+    }
+    [data-theme="light"] header{
+      background: linear-gradient(180deg, rgba(255,255,255,.75), rgba(255,255,255,.45));
+    }
+    .nav{
+      height:var(--header-h);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width: 210px;
+    }
+    .logo{
+      width:42px; height:42px;
+      border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,.55), transparent 42%),
+        radial-gradient(circle at 75% 70%, rgba(255,255,255,.25), transparent 48%),
+        linear-gradient(135deg, rgba(155,92,255,.85), rgba(53,211,255,.75));
+      box-shadow: 0 0 22px rgba(155,92,255,.22), 0 0 22px rgba(53,211,255,.18);
+      border:1px solid rgba(255,255,255,.25);
+    }
+    .brand strong{
+      font-size:1.05rem;
+      letter-spacing:.3px;
+    }
+    .brand span{
+      display:block;
+      font-size:.78rem;
+      color:var(--muted);
+      margin-top:-2px;
+    }
+
+    nav ul{
+      list-style:none;
+      display:flex;
+      gap:18px;
+      padding:0;
+      margin:0;
+      align-items:center;
+    }
+    nav a{
+      font-size:.92rem;
+      color:var(--muted);
+      padding:10px 10px;
+      border-radius:12px;
+      transition: .2s ease;
+    }
+    nav a:hover{
+      color:var(--text);
+      background: var(--surface);
+    }
+
+    .nav-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      min-width: 210px;
+      justify-content:flex-end;
+    }
+
+    .btn{
+      border:1px solid var(--border);
+      background: var(--surface);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:14px;
+      font-weight:600;
+      letter-spacing:.2px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      transition: transform .15s ease, background .2s ease, box-shadow .2s ease;
+      user-select:none;
+    }
+    .btn:hover{
+      background: var(--surface2);
+      box-shadow: var(--shadow);
+      transform: translateY(-1px);
+    }
+    .btn.primary{
+      border:1px solid rgba(155,92,255,.35);
+      background:
+        radial-gradient(120% 120% at 20% 15%, rgba(255,255,255,.22), transparent 45%),
+        linear-gradient(135deg, rgba(155,92,255,.92), rgba(53,211,255,.78));
+      box-shadow: 0 12px 30px rgba(155,92,255,.18), 0 10px 26px rgba(53,211,255,.12);
+    }
+    .btn.primary:hover{
+      box-shadow: 0 18px 44px rgba(155,92,255,.22), 0 14px 35px rgba(53,211,255,.16);
+    }
+    .icon{
+      width:16px;height:16px; display:inline-block;
+      opacity:.9;
+    }
+
+    .hamburger{
+      display:none;
+      width:42px;height:42px;
+      border-radius:14px;
+      border:1px solid var(--border);
+      background: var(--surface);
+      cursor:pointer;
+    }
+    .hamburger span{
+      display:block;
+      width:18px; height:2px;
+      background: var(--text);
+      margin:0 auto;
+      border-radius:2px;
+      opacity:.85;
+    }
+    .hamburger span + span{ margin-top:5px; }
+
+    /* Mobile menu */
+    .mobile-menu{
+      display:none;
+      padding: 0 0 14px;
+    }
+    .mobile-menu a{
+      display:block;
+      padding:12px 14px;
+      border-radius:14px;
+      color:var(--muted);
+      border:1px solid transparent;
+    }
+    .mobile-menu a:hover{
+      color:var(--text);
+      background: var(--surface);
+      border-color: var(--border);
+    }
+
+    /* Hero */
+    .hero{
+      position:relative;
+      padding: 54px 0 18px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap:26px;
+      align-items:stretch;
+    }
+    .hero-card{
+      border-radius: var(--radius2);
+      padding: 28px;
+      border:1px solid var(--border);
+      background:
+        radial-gradient(120% 120% at 20% 15%, rgba(255,255,255,.10), transparent 40%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      position:relative;
+      min-height: 360px;
+    }
+    .hero-card::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(650px 320px at 20% 25%, rgba(155,92,255,.22), transparent 55%),
+        radial-gradient(520px 300px at 85% 35%, rgba(53,211,255,.20), transparent 58%),
+        radial-gradient(520px 320px at 55% 90%, rgba(184,199,255,.14), transparent 55%);
+      z-index:0;
+    }
+    .hero-inner{
+      position:relative;
+      z-index:1;
+    }
+    .kicker{
+      display:inline-flex;
+      gap:10px;
+      align-items:center;
+      padding:8px 12px;
+      border-radius:999px;
+      background: rgba(155,92,255,.12);
+      border:1px solid rgba(155,92,255,.22);
+      color: var(--text);
+      font-size:.86rem;
+      margin-bottom:14px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:50%;
+      background: linear-gradient(135deg, var(--neon1), var(--neon2));
+      box-shadow: 0 0 14px rgba(155,92,255,.45);
+    }
+    h1{
+      margin:0 0 12px;
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 3.6vw, 3.3rem);
+      line-height:1.06;
+      letter-spacing: .2px;
+      text-shadow: 0 10px 30px rgba(0,0,0,.35);
+    }
+    .sub{
+      margin:0 0 18px;
+      color:var(--muted);
+      font-size:1.02rem;
+      line-height:1.6;
+      max-width: 52ch;
+    }
+    .hero-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+
+    .hero-side{
+      border-radius: var(--radius2);
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      padding: 22px;
+      position:relative;
+      overflow:hidden;
+      min-height: 360px;
+    }
+    .hero-side::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(420px 260px at 30% 25%, rgba(53,211,255,.18), transparent 60%),
+        radial-gradient(420px 260px at 70% 75%, rgba(155,92,255,.16), transparent 60%);
+      z-index:0;
+    }
+    .hero-side-inner{ position:relative; z-index:1; }
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:12px;
+      margin-top: 10px;
+    }
+    .stat{
+      padding:14px;
+      border-radius: 16px;
+      border:1px solid var(--border);
+      background: var(--surface);
+    }
+    .stat strong{
+      display:block;
+      font-size:1.1rem;
+      letter-spacing:.2px;
+    }
+    .stat span{ color:var(--muted); font-size:.85rem; }
+
+    .pill{
+      margin-top: 14px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .pill b{
+      font-size:.85rem;
+      font-weight:600;
+      color: var(--text);
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      padding:9px 12px;
+      border-radius:999px;
+    }
+
+    /* Sections */
+    section{
+      padding: 54px 0;
+    }
+    .section-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-end;
+      gap:16px;
+      margin-bottom: 18px;
+    }
+    .section-head h2{
+      margin:0;
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 2.4vw, 2.15rem);
+      letter-spacing:.2px;
+    }
+    .section-head p{
+      margin:0;
+      color:var(--muted);
+      max-width: 62ch;
+      line-height:1.6;
+    }
+
+    .grid-3{
+      display:grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap:16px;
+    }
+    .card{
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      box-shadow: var(--shadow);
+      padding: 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .card::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      background: radial-gradient(520px 220px at 10% 0%, rgba(155,92,255,.15), transparent 60%);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .card > *{ position:relative; z-index:1; }
+    .card h3{ margin:0 0 8px; font-size:1.08rem; }
+    .card p{ margin:0; color:var(--muted); line-height:1.6; }
+
+    /* Menu */
+    .tabs{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin: 14px 0 18px;
+    }
+    .tab{
+      padding:10px 12px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: var(--surface);
+      color:var(--muted);
+      cursor:pointer;
+      font-weight:600;
+      font-size:.9rem;
+      transition:.2s ease;
+    }
+    .tab[aria-selected="true"]{
+      color:var(--text);
+      border-color: rgba(155,92,255,.35);
+      background: rgba(155,92,255,.14);
+      box-shadow: 0 0 0 4px rgba(155,92,255,.10);
+    }
+
+    .menu-grid{
+      display:grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap:16px;
+    }
+    .menu-item{
+      display:flex;
+      gap:14px;
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      padding: 14px;
+      align-items:flex-start;
+      box-shadow: var(--shadow);
+      transition: transform .15s ease;
+    }
+    .menu-item:hover{ transform: translateY(-2px); }
+    .thumb{
+      width:86px; height:86px;
+      border-radius: 18px;
+      flex:0 0 auto;
+      border:1px solid rgba(255,255,255,.18);
+      overflow:hidden;
+      position:relative;
+      background:
+        radial-gradient(circle at 25% 25%, rgba(255,255,255,.35), transparent 42%),
+        linear-gradient(135deg, rgba(155,92,255,.55), rgba(53,211,255,.45));
+      box-shadow: 0 0 18px rgba(155,92,255,.12);
+    }
+    .thumb img{ width:100%; height:100%; object-fit:cover; filter:saturate(1.05) contrast(1.05); }
+    .menu-meta{ flex:1 1 auto; }
+    .menu-top{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .menu-meta h4{ margin:0; font-size:1.02rem; }
+    .price{
+      font-weight:800;
+      letter-spacing:.2px;
+      background: rgba(53,211,255,.12);
+      border:1px solid rgba(53,211,255,.24);
+      padding:6px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .menu-meta p{ margin:8px 0 0; color:var(--muted); line-height:1.55; font-size:.94rem; }
+    .badge{
+      display:inline-flex;
+      margin-top:10px;
+      font-size:.78rem;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color:var(--muted);
+      gap:8px;
+      align-items:center;
+    }
+    .badge i{
+      width:8px;height:8px;border-radius:50%;
+      background: linear-gradient(135deg, var(--neon1), var(--neon2));
+      display:inline-block;
+      box-shadow: 0 0 14px rgba(155,92,255,.35);
+    }
+
+    /* Gallery */
+    .gallery{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap:12px;
+    }
+    .g{
+      border-radius: var(--radius);
+      border:1px solid var(--border);
+      background: var(--surface);
+      overflow:hidden;
+      position:relative;
+      min-height: 170px;
+      box-shadow: var(--shadow);
+      transition: transform .15s ease;
+    }
+    .g:hover{ transform: translateY(-2px); }
+    .g::before{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(320px 220px at 15% 20%, rgba(155,92,255,.18), transparent 58%),
+        radial-gradient(360px 240px at 85% 75%, rgba(53,211,255,.16), transparent 60%);
+      pointer-events:none;
+      z-index:0;
+    }
+    .g img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:.92;
+      transform: scale(1.02);
+      transition: transform .2s ease, opacity .2s ease;
+      position:relative; z-index:1;
+    }
+    .g:hover img{ transform: scale(1.06); opacity:.98; }
+
+    .g1{ grid-column: span 5; }
+    .g2{ grid-column: span 4; }
+    .g3{ grid-column: span 3; }
+    .g4{ grid-column: span 4; }
+    .g5{ grid-column: span 4; }
+    .g6{ grid-column: span 4; }
+
+    /* Reservations + Contact */
+    .split{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
+      align-items:stretch;
+    }
+    form{
+      display:grid;
+      gap:12px;
+    }
+    label{
+      font-size:.86rem;
+      color:var(--muted);
+      display:block;
+      margin-bottom:6px;
+    }
+    input, select, textarea{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+      color: var(--text);
+      outline:none;
+      font-family: var(--font-ui);
+      transition: box-shadow .2s ease, border-color .2s ease, background .2s ease;
+    }
+    [data-theme="light"] input,
+    [data-theme="light"] select,
+    [data-theme="light"] textarea{
+      background: rgba(20,25,40,.04);
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color: rgba(155,92,255,.45);
+      box-shadow: 0 0 0 4px rgba(155,92,255,.12);
+    }
+    textarea{ min-height: 110px; resize: vertical; }
+
+    .two{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+
+    .map{
+      border-radius: var(--radius);
+      overflow:hidden;
+      border:1px solid var(--border);
+      height: 240px;
+      box-shadow: var(--shadow);
+    }
+    iframe{ width:100%; height:100%; border:0; filter:saturate(1.1) contrast(1.05); }
+
+    .contact-lines{
+      display:grid;
+      gap:10px;
+      margin-top: 10px;
+    }
+    .line{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      padding:12px;
+      border-radius: 16px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,.05);
+    }
+    .line b{ display:block; }
+    .line span{ color:var(--muted); font-size:.92rem; }
+    .social{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 12px;
+    }
+    .social a{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius: 999px;
+      border:1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      transition: .2s ease;
+      font-weight:600;
+      font-size:.9rem;
+    }
+    .social a:hover{
+      color:var(--text);
+      background: var(--surface2);
+    }
+
+    /* Footer */
+    footer{
+      border-top: 1px solid var(--border);
+      padding: 26px 0;
+      color: var(--muted);
+    }
+    .foot{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .tiny{
+      font-size:.9rem;
+    }
+
+    /* Utilities */
+    .divider{
+      height:1px;
+      background: var(--border);
+      margin: 26px 0;
+      opacity:.9;
+    }
+    .sr-only{
+      position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .menu-grid{ grid-template-columns: 1fr; }
+      .split{ grid-template-columns: 1fr; }
+      .grid-3{ grid-template-columns: 1fr; }
+      .g1,.g2,.g3,.g4,.g5,.g6{ grid-column: span 12; }
+      nav ul{ display:none; }
+      .hamburger{ display:inline-grid; place-items:center; }
+      .mobile-menu.open{ display:block; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="glow-blob" aria-hidden="true"></div>
+  <div class="glow-blob b2" aria-hidden="true"></div>
+
+  <div class="cosmos" aria-hidden="true">
+    <canvas id="stars"></canvas>
+    <canvas id="dust"></canvas>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="nav">
+        <a class="brand" href="#home" aria-label="Galaxy Restaurant home">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <strong>Galaxy Restaurant</strong>
+            <span>A Taste Beyond the Stars</span>
+          </div>
+        </a>
+
+        <nav aria-label="Primary">
+          <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#reservations">Reservations</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="btn" id="themeBtn" type="button" aria-label="Toggle dark and light mode">
+            <span class="icon" aria-hidden="true">☾</span>
+            Theme
+          </button>
+          <a class="btn primary" href="#reservations">
+            Book a Table
+            <span class="icon" aria-hidden="true">✦</span>
+          </a>
+          <button class="hamburger" id="hamburger" type="button" aria-label="Open mobile menu">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="mobile-menu" id="mobileMenu" aria-label="Mobile navigation">
+        <a href="#about">About</a>
+        <a href="#menu">Menu</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#reservations">Reservations</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="home" class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-card">
+          <div class="hero-inner">
+            <div class="kicker">
+              <span class="dot" aria-hidden="true"></span>
+              Futuristic Fine Dining • Neon Nights • Cosmic Flavor
+            </div>
+            <h1>A Taste Beyond the Stars</h1>
+            <p class="sub">
+              Welcome to <b>Galaxy Restaurant</b>—where fine dining meets an immersive, space-inspired atmosphere.
+              Signature dishes, stellar cocktails, and an ambiance that feels truly out of this world.
+            </p>
+
+            <div class="hero-actions">
+              <a class="btn primary" href="#menu">View Menu <span class="icon" aria-hidden="true">☄</span></a>
+              <a class="btn" href="#reservations">Book a Table <span class="icon" aria-hidden="true">✧</span></a>
+              <a class="btn" href="#gallery">Explore Gallery <span class="icon" aria-hidden="true">⟡</span></a>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="pill" aria-label="Highlights">
+              <b>Chef’s Tasting</b>
+              <b>Signature Nebula Desserts</b>
+              <b>Zero-Gravity Cocktails</b>
+              <b>Live Ambient Nights</b>
+            </div>
+          </div>
+        </div>
+
+        <aside class="hero-side">
+          <div class="hero-side-inner">
+            <h3 style="margin:0 0 8px;">Tonight’s Orbit</h3>
+            <p style="margin:0; color:var(--muted); line-height:1.6;">
+              Reserve your seat and step into a luminous dining journey inspired by the cosmos.
+            </p>
+
+            <div class="stats" aria-label="Quick info">
+              <div class="stat">
+                <strong>4.9★</strong>
+                <span>Guest rating</span>
+              </div>
+              <div class="stat">
+                <strong>18:00–00:30</strong>
+                <span>Hours (daily)</span>
+              </div>
+              <div class="stat">
+                <strong>Dress: Smart</strong>
+                <span>Evenings</span>
+              </div>
+              <div class="stat">
+                <strong>Live Nights</strong>
+                <span>Thu–Sat</span>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="card" style="box-shadow:none;">
+              <h3 style="margin:0 0 8px;">Signature Spotlight</h3>
+              <p style="margin:0; color:var(--muted); line-height:1.6;">
+                <b>Starlight Truffle Risotto</b> — creamy, aromatic, finished with shimmering herb oil.
+              </p>
+              <div class="badge"><i></i> Most ordered this week</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <section id="about">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>About Galaxy Restaurant</h2>
+          <p>
+            Galaxy Restaurant is a fine-dining experience designed to feel cosmic, luxurious, and warmly inviting.
+            Our menu blends bold global flavors with modern technique—served under a canopy of stars.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Immersive Atmosphere</h3>
+          <p>Subtle starfields, neon accents, and ambient soundscapes create a refined “space lounge” vibe.</p>
+        </div>
+        <div class="card">
+          <h3>Chef-Driven Cuisine</h3>
+          <p>Seasonal ingredients, daring pairings, and signature plating inspired by constellations and nebulae.</p>
+        </div>
+        <div class="card">
+          <h3>Cosmic Hospitality</h3>
+          <p>Attentive service, curated wine & cocktail program, and a welcoming, celebratory feel—every night.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="menu">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Menu</h2>
+          <p>Browse categories and discover our signature dishes. (Replace items, prices, and images anytime.)</p>
+        </div>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Menu categories">
+        <button class="tab" role="tab" aria-selected="true" data-filter="starters">Starters</button>
+        <button class="tab" role="tab" aria-selected="false" data-filter="mains">Main Courses</button>
+        <button class="tab" role="tab" aria-selected="false" data-filter="desserts">Desserts</button>
+        <button class="tab" role="tab" aria-selected="false" data-filter="drinks">Drinks</button>
+      </div>
+
+      <div class="menu-grid" id="menuGrid">
+        <!-- Starters -->
+        <article class="menu-item" data-cat="starters">
+          <div class="thumb">
+            <img alt="Meteor Spice Calamari" src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=400&q=70">
+          </div>
+          <div class="menu-meta">
+            <div class="menu-top">
+              <h4>Meteor Spice Calamari</h4>
+              <div class="price">$12</div>
+            </div>
+            <p>Crisp calamari, citrus-chili glaze, and stardust herbs.</p>
+            <div class="badge"><i></i> Signature starter</div>
+          </div>
+        </article>
+
+        <article class="menu-item" data-cat="starters">
+          <div class="thumb">
+            <img alt="Lunar Burrata" src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=400&q=70">
+          </div>
+          <div class="menu-meta">
+            <div class="menu-top">
+              <h4>Lunar Burrata</h4>
+              <div class="price">$14</div>
+            </div>
+            <p>Creamy burrata, roasted tomatoes, basil oil, and nebula balsamic.</p>
+            <div class="badge"><i></i> Vegetarian</div>
+          </div>
+        </article>
+
+        <!-- Mains -->
+        <article class="menu-item" data-cat="mains" hidden>
+          <div class="thumb">
+            <img alt="Starlight Truffle Risotto" src="https://images.unsplash.com/photo-1604908554162-12f1e2d22e76?auto=format&fit=crop&w=400&q=70">
+          </div>
+          <div class="menu-meta">
+            <div class="menu-top">
+              <h4>Starlight Truffle Risotto</h4>
+              <div class="price">$24</div>
+            </div>
+            <p>Silky arborio, wild mushrooms, parmesan, and truffle aroma.</p>
+            <div class="badge"><i></i> House favorite</div>
+          </div>
+        </article>
+
+        <article class="menu-item" data-cat="mains" hidden>
+          <div class="thumb">
+            <img alt="Orbit Grilled Salmon" src="https://images.unsplash.com/photo-1611599537845-1c7aca0091c0?auto=format&fit=crop&w=400&q=70">
+          </div>
+          <div class="menu-meta">
+            <div class="menu-top">
+              <h4>Orbit Grilled Salmon</h4>
+              <div class="price">$28</div>
+            </div>
+            <p>Charred salmon, lemon foam, and cosmic greens with toasted seeds.</p>
+            <div class="badge"><i></i> Gluten-free option</div>
+          </div>
+        </article>
+
+        <!-- Desserts -->
+        <article class="menu-item" data-cat="desserts" hidden>
+          <div class="thumb">
+            <img alt="Nebula Chocolate Dome" src="https://images.unsplash.com/photo-1514986888952-8cd320577b68?auto=format&fit=crop&w=400&q=70">
+          </div>
+          <div class="menu-meta">
+            <div class="menu-top">
+              <h4>Nebula Chocolate Dome</h4>
+              <div class="price">$11</div>
+            </div>
+            <p>Dark chocolate dome, berry core, and warm “supernova” sauce pour.</p>
+            <div class="badge"><i></i> Best-seller</div>
+          </div>
+        </article>
+
+        <article class="menu-item" data-cat="desserts" hidden>
+          <div class="thumb">
+            <img alt="Milky Way Panna Cotta" src="https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=400&q=70">
+          </div>
+          <div class="menu-meta">
+            <div class="menu-top">
+              <h4>Milky Way Panna Cotta</h4>
+              <div class="price">$9</div>
+            </div>
+            <p>Vanilla panna cotta, starfruit gel, and shimmering sugar crystals.</p>
+            <div class="badge"><i></i> Light & elegant</div>
+          </div>
+        </article>
+
+        <!-- Drinks -->
+        <article class="menu-item" data-cat="drinks" hidden>
+          <div class="thumb">
+            <img alt="Zero-Gravity Martini" src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=400&q=70">
+          </div>
+          <div class="menu-meta">
+            <div class="menu-top">
+              <h4>Zero-Gravity Martini</h4>
+              <div class="price">$13</div>
+            </div>
+            <p>Botanical gin, elderflower, and a bright citrus orbit twist.</p>
+            <div class="badge"><i></i> Signature cocktail</div>
+          </div>
+        </article>
+
+        <article class="menu-item" data-cat="drinks" hidden>
+          <div class="thumb">
+            <img alt="Cosmic Blue Tonic" src="https://images.unsplash.com/photo-1528823872057-9c018a7d0c14?auto=format&fit=crop&w=400&q=70">
+          </div>
+          <div class="menu-meta">
+            <div class="menu-top">
+              <h4>Cosmic Blue Tonic</h4>
+              <div class="price">$8</div>
+            </div>
+            <p>Butterfly-pea infusion, tonic sparkle, and mint starlight.</p>
+            <div class="badge"><i></i> Zero-proof</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Gallery</h2>
+          <p>Food, interior, and atmosphere—crafted for a luminous night out.</p>
+        </div>
+      </div>
+
+      <div class="gallery" aria-label="Photo gallery">
+        <figure class="g g1">
+          <img alt="Restaurant ambiance" src="https://images.unsplash.com/photo-1528823872057-9c018a7d0c14?auto=format&fit=crop&w=1200&q=70">
+        </figure>
+        <figure class="g g2">
+          <img alt="Fine dining plating" src="https://images.unsplash.com/photo-1541544181051-e46601e7bb9b?auto=format&fit=crop&w=1200&q=70">
+        </figure>
+        <figure class="g g3">
+          <img alt="Cocktail closeup" src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1200&q=70">
+        </figure>
+        <figure class="g g4">
+          <img alt="Dessert" src="https://images.unsplash.com/photo-1514986888952-8cd320577b68?auto=format&fit=crop&w=1200&q=70">
+        </figure>
+        <figure class="g g5">
+          <img alt="Interior lighting" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=70">
+        </figure>
+        <figure class="g g6">
+          <img alt="Dinner table" src="https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?auto=format&fit=crop&w=1200&q=70">
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section id="reservations">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Reservations</h2>
+          <p>Book your table. This demo form shows a confirmation message—connect it to your backend later if needed.</p>
+        </div>
+      </div>
+
+      <div class="split">
+        <div class="card">
+          <h3 style="margin:0 0 10px;">Book a Table</h3>
+          <form id="reserveForm">
+            <div class="two">
+              <div>
+                <label for="name">Name</label>
+                <input id="name" name="name" type="text" placeholder="Your name" required />
+              </div>
+              <div>
+                <label for="phone">Phone</label>
+                <input id="phone" name="phone" type="tel" placeholder="+880…" required />
+              </div>
+            </div>
+
+            <div class="two">
+              <div>
+                <label for="date">Date</label>
+                <input id="date" name="date" type="date" required />
+              </div>
+              <div>
+                <label for="time">Time</label>
+                <input id="time" name="time" type="time" required />
+              </div>
+            </div>
+
+            <div class="two">
+              <div>
+                <label for="guests">Guests</label>
+                <select id="guests" name="guests" required>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                </select>
+              </div>
+              <div>
+                <label for="occasion">Occasion</label>
+                <select id="occasion" name="occasion">
+                  <option value="None">None</option>
+                  <option value="Birthday">Birthday</option>
+                  <option value="Anniversary">Anniversary</option>
+                  <option value="Business">Business</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="notes">Notes</label>
+              <textarea id="notes" name="notes" placeholder="Allergies, seating preferences, special requests…"></textarea>
+            </div>
+
+            <button class="btn primary" type="submit">Confirm Reservation ✦</button>
+            <p id="reserveMsg" style="margin:4px 0 0; color:var(--muted); line-height:1.5;"></p>
+          </form>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 10px;">What to Expect</h3>
+          <p style="margin:0; color:var(--muted); line-height:1.6;">
+            Your evening includes ambient lighting, curated music, and chef-led seasonal specials.
+            For larger parties (8+), please contact us directly.
+          </p>
+
+          <div class="divider"></div>
+
+          <div class="grid-3" style="grid-template-columns: 1fr; gap:12px;">
+            <div class="line">
+              <span aria-hidden="true">⏳</span>
+              <div>
+                <b>Seating Duration</b>
+                <span>90 minutes (standard)</span>
+              </div>
+            </div>
+            <div class="line">
+              <span aria-hidden="true">🍷</span>
+              <div>
+                <b>Pairing Options</b>
+                <span>Wine & zero-proof pairings available</span>
+              </div>
+            </div>
+            <div class="line">
+              <span aria-hidden="true">✨</span>
+              <div>
+                <b>Special Requests</b>
+                <span>Let us know allergies and celebrations</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <h2>Contact</h2>
+          <p>Find us, call us, or send a message. Replace the details below with your real info.</p>
+        </div>
+      </div>
+
+      <div class="split">
+        <div class="card">
+          <h3 style="margin:0 0 10px;">Galaxy Restaurant</h3>
+
+          <div class="contact-lines">
+            <div class="line">
+              <span aria-hidden="true">📍</span>
+              <div>
+                <b>Address</b>
+                <span>123 Cosmic Avenue, Star City</span>
+              </div>
+            </div>
+            <div class="line">
+              <span aria-hidden="true">☎</span>
+              <div>
+                <b>Phone</b>
+                <span>+880 1XXX-XXXXXX</span>
+              </div>
+            </div>
+            <div class="line">
+              <span aria-hidden="true">✉</span>
+              <div>
+                <b>Email</b>
+                <span>hello@galaxyrestaurant.com</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="social" aria-label="Social links">
+            <a href="#" aria-label="Instagram">⟡ Instagram</a>
+            <a href="#" aria-label="Facebook">✦ Facebook</a>
+            <a href="#" aria-label="TikTok">☄ TikTok</a>
+          </div>
+
+          <div class="divider"></div>
+
+          <p class="tiny" style="margin:0;">
+            Tip: replace the map with your real location and update your reservation form to send emails or save to a database.
+          </p>
+        </div>
+
+        <div class="card">
+          <h3 style="margin:0 0 10px;">Map</h3>
+          <div class="map" aria-label="Google map">
+            <!-- Replace src with your restaurant embed link -->
+            <iframe
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              src="https://www.google.com/maps?q=Dhaka&output=embed"
+              title="Google Map">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="foot">
+        <div class="brand" style="min-width:auto;">
+          <div class="logo" aria-hidden="true" style="width:34px;height:34px;border-radius:14px;"></div>
+          <div>
+            <strong style="font-size:1rem;">Galaxy Restaurant</strong>
+            <span>Fine dining, cosmic vibes</span>
+          </div>
+        </div>
+        <div class="tiny">© <span id="year"></span> Galaxy Restaurant. All rights reserved.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // --- Theme toggle (persists) ---
+    const themeBtn = document.getElementById("themeBtn");
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem("galaxy_theme");
+    if (savedTheme) root.setAttribute("data-theme", savedTheme);
+
+    function setThemeIcon(){
+      const isLight = root.getAttribute("data-theme") === "light";
+      themeBtn.querySelector(".icon").textContent = isLight ? "☀" : "☾";
+    }
+    setThemeIcon();
+
+    themeBtn.addEventListener("click", () => {
+      const current = root.getAttribute("data-theme");
+      const next = current === "light" ? "dark" : "light";
+      root.setAttribute("data-theme", next);
+      localStorage.setItem("galaxy_theme", next);
+      setThemeIcon();
+    });
+
+    // --- Mobile menu ---
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+    hamburger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("open");
+    });
+    mobileMenu.querySelectorAll("a").forEach(a => {
+      a.addEventListener("click", () => mobileMenu.classList.remove("open"));
+    });
+
+    // --- Menu tabs filter ---
+    const tabs = document.querySelectorAll(".tab");
+    const menuItems = document.querySelectorAll(".menu-item");
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.setAttribute("aria-selected", "false"));
+        tab.setAttribute("aria-selected", "true");
+        const filter = tab.dataset.filter;
+
+        menuItems.forEach(item => {
+          const show = item.dataset.cat === filter;
+          item.hidden = !show;
+        });
+      });
+    });
+
+    // --- Reservations form demo ---
+    const form = document.getElementById("reserveForm");
+    const msg = document.getElementById("reserveMsg");
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = data.get("name");
+      const date = data.get("date");
+      const time = data.get("time");
+      const guests = data.get("guests");
+
+      msg.textContent = `Confirmed ✦ ${name}, your table for ${guests} is reserved on ${date} at ${time}.`;
+      form.reset();
+      // Keep message visible
+      setTimeout(() => msg.textContent = "", 9000);
+    });
+
+    // --- Footer year ---
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // --- Cosmic animation (stars + dust) ---
+    function setupCanvas(canvas){
+      const ctx = canvas.getContext("2d");
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      function resize(){
+        canvas.width = Math.floor(canvas.clientWidth * dpr);
+        canvas.height = Math.floor(canvas.clientHeight * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resize();
+      window.addEventListener("resize", resize);
+      return { ctx, resize };
+    }
+
+    const starsCanvas = document.getElementById("stars");
+    const dustCanvas  = document.getElementById("dust");
+    const starsCtx = setupCanvas(starsCanvas).ctx;
+    const dustCtx  = setupCanvas(dustCanvas).ctx;
+
+    const stars = [];
+    const dust = [];
+
+    function rand(min, max){ return Math.random() * (max - min) + min; }
+
+    function init(){
+      stars.length = 0;
+      dust.length = 0;
+
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      const starCount = Math.floor((w * h) / 12000);
+      const dustCount = Math.floor((w * h) / 17000);
+
+      for(let i=0;i<starCount;i++){
+        stars.push({
+          x: rand(0,w),
+          y: rand(0,h),
+          r: rand(.6, 1.6),
+          a: rand(.35, .95),
+          s: rand(.15, .65),
+          tw: rand(0, Math.PI*2)
+        });
+      }
+      for(let i=0;i<dustCount;i++){
+        dust.push({
+          x: rand(0,w),
+          y: rand(0,h),
+          r: rand(1.0, 2.6),
+          a: rand(.08, .22),
+          s: rand(.05, .25),
+          hue: rand(200, 290)
+        });
+      }
+    }
+    init();
+    window.addEventListener("resize", init);
+
+    let last = performance.now();
+    function animate(now){
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      // clear
+      starsCtx.clearRect(0,0,w,h);
+      dustCtx.clearRect(0,0,w,h);
+
+      // stars
+      starsCtx.globalCompositeOperation = "lighter";
+      for(const p of stars){
+        p.y += p.s * 18 * dt;
+        p.x += Math.sin(now/1400 + p.tw) * p.s * 10 * dt;
+        if (p.y > h + 10) { p.y = -10; p.x = rand(0,w); }
+
+        const twinkle = 0.6 + 0.4 * Math.sin(now/900 + p.tw);
+        starsCtx.globalAlpha = p.a * twinkle;
+        starsCtx.beginPath();
+        starsCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        starsCtx.fillStyle = "rgba(255,255,255,1)";
+        starsCtx.fill();
+      }
+
+      // dust / nebula specks
+      dustCtx.globalCompositeOperation = "screen";
+      for(const p of dust){
+        p.y += p.s * 10 * dt;
+        if (p.y > h + 10) { p.y = -10; p.x = rand(0,w); }
+        dustCtx.globalAlpha = p.a;
+        dustCtx.beginPath();
+        dustCtx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        dustCtx.fillStyle = `hsla(${p.hue}, 90%, 70%, 1)`;
+        dustCtx.fill();
+      }
+
+      requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>
